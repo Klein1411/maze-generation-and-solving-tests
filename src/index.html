@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maze Solver Visualizer :: Cyberpunk Neon</title>
+  <meta name="description" content="Real-time maze solving algorithm visualizer with BFS, DFS, A*, Dijkstra, GBFS, and Wall Follower">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+  <canvas id="particles-bg"></canvas>
+  
+  <header>
+    &lt;&lt; MAZE SOLVER VISUALIZER &gt;&gt;
+  </header>
+  
+  <main>
+    <aside id="controls" class="glass-panel">
+      <!-- MAZE SOURCE -->
+      <div class="control-group">
+        <div class="section-title">[&gt;] MAZE SOURCE</div>
+        <div class="row">
+          <label class="checkbox-container"><input type="radio" name="source" value="dataset" checked> Dataset</label>
+          <label class="checkbox-container"><input type="radio" name="source" value="generate"> Generate</label>
+          <label class="checkbox-container"><input type="radio" name="source" value="file"> Load File</label>
+        </div>
+        
+        <div id="source-dataset-ctrl">
+          <input type="text" id="dataset-search" placeholder="Search maze (e.g. maze0_dim42)" style="margin-bottom: 10px;">
+          <select id="dataset-select">
+            <option value="">Loading maze dataset...</option>
+          </select>
+        </div>
+        
+        <div id="source-generate-ctrl" style="display:none;" class="control-group">
+          <div class="row">
+            <label>Dim: <span id="dim-val">42</span></label>
+            <input type="range" id="dim-slider" min="10" max="200" value="42">
+          </div>
+          <div class="row">
+            <label class="checkbox-container"><input type="radio" name="gen-type" value="p" checked> Perfect</label>
+            <label class="checkbox-container"><input type="radio" name="gen-type" value="i"> Imperfect</label>
+          </div>
+          <button id="btn-generate">Generate Maze</button>
+        </div>
+        
+        <div id="source-file-ctrl" style="display:none;">
+          <input type="file" id="file-input" accept=".txt">
+        </div>
+      </div>
+
+      <!-- ALGORITHM -->
+      <div class="control-group">
+        <div class="section-title">[*] ALGORITHM</div>
+        <div class="algo-grid" id="algo-btns-1">
+          <button data-algo="bfs" class="active">BFS</button>
+          <button data-algo="dfs">DFS</button>
+          <button data-algo="dijkstra">Dijkstra</button>
+          <button data-algo="gbfs">GBFS</button>
+          <button data-algo="astar">A*</button>
+          <button data-algo="wall">Wall Follower</button>
+        </div>
+        
+        <div class="algo-desc" id="algo-desc-1">
+          <!-- Populated by JS -->
+        </div>
+
+        <label class="checkbox-container" style="margin-top: 10px;">
+          <input type="checkbox" id="compare-mode-toggle"> [x] Compare Mode
+        </label>
+        
+        <div id="algo-2-container" style="display:none;" class="control-group">
+          <div class="algo-grid" id="algo-btns-2">
+            <button data-algo="bfs">BFS</button>
+            <button data-algo="dfs">DFS</button>
+            <button data-algo="dijkstra">Dijkstra</button>
+            <button data-algo="gbfs" class="active">GBFS</button>
+            <button data-algo="astar">A*</button>
+            <button data-algo="wall">Wall Follower</button>
+          </div>
+          <div class="algo-desc" id="algo-desc-2"></div>
+        </div>
+      </div>
+
+      <!-- PLAYBACK -->
+      <div class="control-group">
+        <div class="section-title">[|&gt;] PLAYBACK</div>
+        <div class="row">
+          <button id="btn-play" class="play-btn">[&gt;] PLAY</button>
+          <button id="btn-pause" class="pause-btn">[||] PAUSE</button>
+          <button id="btn-stop" class="stop-btn">[#] STOP</button>
+          <button id="btn-skip">[&gt;&gt;] SKIP</button>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+          <label style="min-width: 60px;">Speed:</label>
+          <input type="range" id="speed-slider" min="0" max="100" value="50">
+          <span id="speed-val" style="min-width: 50px; text-align: right; color: var(--neon-cyan);">x1</span>
+        </div>
+        <div class="row">
+          <button class="speed-btn" data-val="1">x0.5</button>
+          <button class="speed-btn active" data-val="5">x1</button>
+          <button class="speed-btn" data-val="20">x2</button>
+          <button class="speed-btn" data-val="50">x5</button>
+          <button class="speed-btn" data-val="200">x10</button>
+          <button class="speed-btn" data-val="99999">MAX</button>
+        </div>
+      </div>
+    </aside>
+    
+    <section id="canvas-area">
+      <div id="canvas-container">
+        <div class="canvas-wrapper">
+          <div class="canvas-overlay" id="overlay-1">Algorithm 1</div>
+          <canvas id="maze-canvas-1" class="maze-canvas"></canvas>
+        </div>
+        <div class="canvas-wrapper" id="canvas-wrapper-2" style="display:none;">
+          <div class="canvas-overlay" id="overlay-2">Algorithm 2</div>
+          <canvas id="maze-canvas-2" class="maze-canvas"></canvas>
+        </div>
+      </div>
+      
+      <div id="stats-panel" class="glass-panel">
+        <div class="stats-col" id="stats-1">
+          <h3>MAIN ALGORITHM</h3>
+          <div class="stats-grid">
+            <div class="stat-line full"><span class="stat-label">:: MAZE</span><span class="stat-value" id="s1-maze">-</span></div>
+            <div class="stat-line full">
+              <span class="stat-label">:: EXPLORED</span>
+              <div class="progress-bar-container"><div class="progress-bar-fill" id="s1-prog-fill"></div></div>
+              <span class="stat-value" id="s1-explored" style="min-width: 80px; text-align: right;">0 / 0</span>
+            </div>
+            <div class="stat-line"><span class="stat-label">:: PATH</span><span class="stat-value" id="s1-path">-</span></div>
+            <div class="stat-line"><span class="stat-label">:: TIME</span><span class="stat-value" id="s1-time">0.000s</span></div>
+            <div class="stat-line full"><span class="stat-label">:: OPS</span><span class="stat-value" id="s1-ops">-</span></div>
+            <div class="stat-line"><span class="stat-label">:: QUEUE</span><span class="stat-value" id="s1-queue">0</span></div>
+            <div class="stat-line"><span class="stat-label">:: SPEED</span><span class="stat-value" id="s1-speed">0 steps/s</span></div>
+          </div>
+        </div>
+        
+        <div class="stats-col" id="stats-2" style="display:none; border-left: 1px solid rgba(0,240,255,0.2); padding-left: 20px;">
+          <h3>COMPARE ALGORITHM</h3>
+          <div class="stats-grid">
+            <div class="stat-line full"><span class="stat-label">:: MAZE</span><span class="stat-value" id="s2-maze">-</span></div>
+            <div class="stat-line full">
+              <span class="stat-label">:: EXPLORED</span>
+              <div class="progress-bar-container"><div class="progress-bar-fill" id="s2-prog-fill"></div></div>
+              <span class="stat-value" id="s2-explored" style="min-width: 80px; text-align: right;">0 / 0</span>
+            </div>
+            <div class="stat-line"><span class="stat-label">:: PATH</span><span class="stat-value" id="s2-path">-</span></div>
+            <div class="stat-line"><span class="stat-label">:: TIME</span><span class="stat-value" id="s2-time">0.000s</span></div>
+            <div class="stat-line full"><span class="stat-label">:: OPS</span><span class="stat-value" id="s2-ops">-</span></div>
+            <div class="stat-line"><span class="stat-label">:: QUEUE</span><span class="stat-value" id="s2-queue">0</span></div>
+            <div class="stat-line"><span class="stat-label">:: SPEED</span><span class="stat-value" id="s2-speed">0 steps/s</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Extracted Data and Logic -->
+  <script src="../data/processed/maze_data.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/algorithms.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
