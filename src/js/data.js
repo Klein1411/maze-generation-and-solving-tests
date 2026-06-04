@@ -1,5 +1,5 @@
 // --- ALGORITHM DATA ---
-const ALGO_INFO = {
+export const ALGO_INFO = {
   bfs: {
     name: 'Breadth-First Search', tag: 'UNINFORMED',
     desc: 'Explores all neighbors at current depth before moving deeper. Uses a FIFO queue.',
@@ -38,7 +38,7 @@ const ALGO_INFO = {
   }
 };
 
-function updateAlgoDesc(targetId, algoId) {
+export function updateAlgoDesc(targetId, algoId) {
   const info = ALGO_INFO[algoId];
   const html = `
     <strong>${info.name}</strong> <span class="tag">${info.tag}</span><br>

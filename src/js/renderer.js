@@ -1,5 +1,5 @@
 // --- RENDERER ---
-class MazeRenderer {
+export class MazeRenderer {
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext('2d', { alpha: false });

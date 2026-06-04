@@ -1,5 +1,5 @@
 // --- MAZE GENERATOR ---
-function generatePerfectMaze(dim) {
+export function generatePerfectMaze(dim) {
   const rows = 2 * dim + 1, cols = 2 * dim + 1;
   const grid = Array.from({length: rows}, () => new Array(cols).fill(1));
   const visited = Array.from({length: dim}, () => new Array(dim).fill(false));
@@ -33,7 +33,7 @@ function generatePerfectMaze(dim) {
   return grid;
 }
 
-function generateImperfectMaze(dim) {
+export function generateImperfectMaze(dim) {
   const grid = generatePerfectMaze(dim);
   const rows = grid.length, cols = grid[0].length;
   const wallsToRemove = Math.floor(dim * dim * 0.15);

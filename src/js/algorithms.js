@@ -281,12 +281,12 @@ function solveWallFollower(grid, start, end) {
   return { explored, path: found ? simplePath : [], frontierSizes, found };
 }
 
-const SOLVERS = {
+export const SOLVERS = {
   bfs: solveBFS, dfs: solveDFS, dijkstra: solveDijkstra, 
   gbfs: solveGBFS, astar: solveAStar, wall: solveWallFollower
 };
 
-function countOperations(path) {
+export function countOperations(path) {
   const DIRS = [[0,1],[1,0],[0,-1],[-1,0]];
   const ops = { straight: 0, left: 0, right: 0, uturn: 0 };
   if (path.length < 2) return ops;

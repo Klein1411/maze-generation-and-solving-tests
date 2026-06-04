@@ -1,3 +1,8 @@
+import { ALGO_INFO, updateAlgoDesc } from './data.js';
+import { generatePerfectMaze, generateImperfectMaze } from './generator.js';
+import { SOLVERS, countOperations } from './algorithms.js';
+import { MazeRenderer } from './renderer.js';
+
 // --- PARTICLE BACKGROUND ---
 const bgCanvas = document.getElementById('particles-bg');
 const bgCtx = bgCanvas.getContext('2d');
