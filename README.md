@@ -20,11 +20,22 @@ Features
 Project structure
 -----------------
 
-- `data/` - Contains the raw and processed maze datasets.
-- `models/` - Jupyter notebooks and evaluation scripts for offline algorithm testing.
-- `scripts/` - Python utilities for processing and packing text-based maze files.
-- `src/` - The core web application source code.
-- `maze_data_sample.js` - Sample data payload.
+```text
+maze-generation-and-solving-tests/
+├── data/                  # Contains raw and processed datasets
+│   ├── processed/         # Packed base64-encoded mazes
+│   └── raw/               # Raw text files for perfect/imperfect mazes
+├── models/                # Jupyter Notebooks for testing algorithms offline
+├── scripts/               # Python utility scripts
+│   └── embed_mazes.py     # Script to pack raw .txt mazes into JS base64 format
+├── src/                   # Core web application (Vanilla JS/HTML/CSS)
+│   ├── index.html         # Main entry point with UI
+│   ├── style.css          # Styling for the interactive canvas and dashboard
+│   └── ...                # JavaScript logic for parsing and pathfinding
+├── assets/                # Generated images and demo screenshots
+├── maze_data_sample.js    # A sample data file in the root
+└── README.md              # Project documentation
+```
 
 
 Algorithm complexity
