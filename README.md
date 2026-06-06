@@ -1,89 +1,84 @@
-# Maze Solver Visualizer
+Maze Solver Visualizer
+======================
 
-![Maze Solver UI Demo](assets/demo.png)
-> **Note**: *Please replace `assets/demo.png` with an actual screenshot of your Cyberpunk UI.*
+A web-based, real-time visualization tool for pathfinding algorithms on perfect and imperfect mazes.
 
-A web-based, real-time visualization tool for exploring how different pathfinding algorithms navigate through perfect and imperfect mazes. 
+This project provides a comprehensive environment to experiment with graph algorithms, observe their behavior, and compare their efficiency. It includes a dataset of over 3,000 pre-generated mazes and features a custom HTML5 canvas renderer capable of handling large-scale grids (up to 145x145).
 
-I built this project to experiment with graph algorithms and see how they behave in different scenarios. It currently includes a dataset of over 3000 pre-generated mazes and supports side-by-side algorithm comparisons.
+Features
+--------
 
-## 🌟 Features
+- Multiple algorithmic implementations: Breadth-First Search (BFS), Depth-First Search (DFS), Dijkstra's Algorithm, A* Search, Greedy Best-First Search, and Wall Follower.
+- Side-by-side comparative execution of algorithms.
+- Custom dataset of 3,000+ packed and base64-encoded mazes.
+- Real-time performance tracking (operations, path length, explored nodes, queue size, execution speed).
+- Pure vanilla HTML/CSS/JavaScript implementation with no heavy frontend framework dependencies.
 
-- **Multiple Algorithms**: Implementations for Breadth-First Search (BFS), Depth-First Search (DFS), Dijkstra's Algorithm, A* Search, Greedy Best-First Search, and Wall Follower.
-- **Algorithm Comparison**: Run two different algorithms side-by-side on the same maze to compare their efficiency in real-time.
-- **Custom Dataset**: Includes over 3000 packed mazes (perfect and imperfect).
-- **Interactive Canvas**: Pan and zoom across large mazes (up to 145x145) using a custom HTML5 canvas renderer.
-- **Cyberpunk UI**: A dark, neon-themed interface built from scratch without heavy UI frameworks.
 
-## 📂 Project Structure
+Project structure
+-----------------
 
-```text
-maze-generation-and-solving-tests/
-├── data/                  # Contains raw and processed datasets
-│   ├── processed/         # Packed base64-encoded mazes (e.g., maze_data.js)
-│   └── raw/               # Raw text files for perfect/imperfect mazes
-├── models/                # Jupyter Notebooks for testing algorithms offline
-├── scripts/               # Python utility scripts
-│   └── embed_mazes.py     # Script to pack raw .txt mazes into JS base64 format
-├── src/                   # Core web application (Vanilla JS/HTML/CSS)
-│   ├── index.html         # Main entry point with Cyberpunk UI
-│   ├── style.css          # Styling for the interactive canvas and dashboard
-│   └── ...                # JavaScript logic for parsing and pathfinding
-├── maze_data_sample.js    # A sample data file in the root
-└── README.md              # Project documentation
-```
+- `data/` - Contains the raw and processed maze datasets.
+- `models/` - Jupyter notebooks and evaluation scripts for offline algorithm testing.
+- `scripts/` - Python utilities for processing and packing text-based maze files.
+- `src/` - The core web application source code.
+- `maze_data_sample.js` - Sample data payload.
 
-## 🧠 Algorithm Complexity
 
-Here is a quick breakdown of the algorithms implemented and compared within this visualizer:
+Algorithm complexity
+--------------------
 
 | Algorithm | Time Complexity | Space Complexity | Description |
 |-----------|-----------------|------------------|-------------|
-| **BFS** | $O(V + E)$ | $O(V)$ | Explores all neighbors layer by layer. Guarantees shortest path in unweighted graphs. |
-| **DFS** | $O(V + E)$ | $O(V)$ | Dives deep into a path before backtracking. Does not guarantee shortest path. |
-| **Dijkstra** | $O(E \log V)$ | $O(V)$ | Finds shortest path in weighted graphs using a priority queue. |
-| **A* Search** | $O(E \log V)$ | $O(V)$ | Uses heuristics (e.g., Manhattan distance) to find the shortest path efficiently. |
-| **Greedy** | $O(E \log V)$ | $O(V)$ | Picks the path that looks closest to the goal. Fast, but not always optimal. |
-| **Wall Follower**| $O(V)$ | $O(1)$ | Follows the right/left wall. Only works for simply connected mazes. |
+| BFS | O(V + E) | O(V) | Explores neighbors layer by layer; guarantees shortest path in unweighted graphs. |
+| DFS | O(V + E) | O(V) | Dives into a path before backtracking; does not guarantee shortest path. |
+| Dijkstra | O(E log V) | O(V) | Priority queue-based shortest path search for weighted graphs. |
+| A* Search | O(E log V) | O(V) | Heuristic-driven shortest path search (e.g., Manhattan distance). |
+| Greedy | O(E log V) | O(V) | Heuristic-driven fast pathfinding; does not guarantee optimal paths. |
+| Wall Follower | O(V) | O(1) | Rule-based traversal for simply connected mazes. |
 
-*(Note: $V$ = number of vertices/cells, $E$ = number of edges/paths)*
 
-## 💻 Code Architecture
+Code architecture
+-----------------
 
-The pathfinding logic is isolated from the canvas renderer to ensure clean execution. Here is a snippet demonstrating how an algorithm is initialized:
+The pathfinding logic operates independently from the canvas rendering pipeline. To run a pathfinding iteration, initialize the algorithm module with the parsed maze state. 
 
-<p align="center">
-  <a href="https://carbon.now.sh/">
-    <img src="assets/code_snippet.png" alt="Algorithm Initialization Code">
-  </a>
-</p>
-> **Note**: *Please use a tool like [Carbon](https://carbon.now.sh/) to generate a beautiful snippet of your core logic, save it as `assets/code_snippet.png`.*
+*(Note: Add visual reference screenshots such as `assets/demo.png` or `assets/code_snippet.png` here if desired).*
 
-## 🚀 How to Run
 
-Because the application is built entirely with Vanilla JS, HTML, and CSS, it can be run directly in your browser without build steps.
+Installation and usage
+----------------------
 
-1. Clone the repository.
+The application requires no build steps or external dependencies for the web interface.
+
+1. Clone the repository locally.
 2. Navigate to the `src/` directory.
-3. Open `index.html` in any modern web browser.
+3. Open `index.html` in a web browser.
 
-Alternatively, serve it via Python:
+To serve the application via a local HTTP server:
+
 ```bash
 cd src
 python -m http.server 8000
 ```
-Then visit `http://localhost:8000`.
 
-## 🛠 Generating New Mazes
 
-If you want to add your own mazes to the dataset:
-1. Place your raw `.txt` maze files inside `data/raw/perfect_maze/` or `data/raw/imperfect_maze/`.
-2. Run the processing script to pack them:
+Generating new mazes
+--------------------
+
+To integrate custom mazes into the visualizer dataset:
+
+1. Place raw `.txt` maze files inside `data/raw/perfect_maze/` or `data/raw/imperfect_maze/`.
+2. Execute the packing script:
+
 ```bash
 python scripts/embed_mazes.py
 ```
-3. The script will automatically update `data/processed/maze_data.js`, and the changes will be reflected in the visualizer.
 
-## 📄 License
+The script will update `data/processed/maze_data.js` and the web application will reflect the new dataset upon reload.
 
-MIT
+
+License
+-------
+
+This project is released under the MIT License.
