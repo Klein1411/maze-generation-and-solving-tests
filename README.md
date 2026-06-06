@@ -1,6 +1,8 @@
 Maze Solver Visualizer
 ======================
 
+![Demo UI](assets/demo.png)
+
 A web-based, real-time visualization tool for pathfinding algorithms on perfect and imperfect mazes.
 
 This project provides a comprehensive environment to experiment with graph algorithms, observe their behavior, and compare their efficiency. It includes a dataset of over 3,000 pre-generated mazes and features a custom HTML5 canvas renderer capable of handling large-scale grids (up to 145x145).
@@ -43,7 +45,7 @@ Code architecture
 
 The pathfinding logic operates independently from the canvas rendering pipeline. To run a pathfinding iteration, initialize the algorithm module with the parsed maze state. 
 
-*(Note: Add visual reference screenshots such as `assets/demo.png` or `assets/code_snippet.png` here if desired).*
+![A* Algorithm Implementation](assets/code_snippet.png)
 
 
 Installation and usage
